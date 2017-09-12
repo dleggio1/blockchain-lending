@@ -21,7 +21,6 @@ int main(int argc, char **argv)
 	printf("hash -> %s\n", test->hash);
 	printf("prevHash -> %s\n", test->prevHash);
 
-
 	return 0;
 }
 
@@ -32,10 +31,10 @@ block* generateBlock(char *data)
 	time_t timestamp = time(NULL);
 	
 	// generate SHA256 hash of block 
-	unsigned char digest[SHA256_DIGEST_LENGTH];
+	unsigned char *digest = malloc(SHA256_DIGEST_LENGTH);
 	SHA256_CTX ctx;
 	SHA256_Init(&ctx);
-	SHA256_Update(&ctx, &index, 1);
+	SHA256_Update(&ctx, &index, sizeof(int));
 	SHA256_Update(&ctx, ctime(&timestamp), strlen(ctime(&timestamp)));
 	SHA256_Update(&ctx, data, strlen(data));
 	SHA256_Update(&ctx, latestBlock->hash, strlen(latestBlock->hash));
@@ -45,11 +44,8 @@ block* generateBlock(char *data)
 	block* newBlock = (block*) malloc(sizeof(block));
 	newBlock->index = index;
 	newBlock->timestamp = timestamp;
-	newBlock->data = malloc(strlen(data) + 1);
 	newBlock->data = data;
-	newBlock->hash = malloc(strlen(digest) + 1);
 	newBlock->hash = digest;
-	newBlock->prevHash = malloc(strlen(latestBlock->hash) + 1);
 	newBlock->prevHash = latestBlock->hash;
 
 	latestBlock = newBlock;
