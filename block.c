@@ -13,7 +13,8 @@ int main(int argc, char **argv)
 	genesisBlock->hash = "d8a005a48ea046d008272e3a68e16b406dcd4b8fc40dfc06c2fcb6f46508d04d";
 	genesisBlock->prevHash  = "0";
 	latestBlock = genesisBlock;
-	
+
+	// TEST BLOCK	
 	block* test = generateBlock("dyl");
 	printf("index -> %d\n", test->index);
 	printf("timestamp -> %s", ctime(&(test->timestamp)));
@@ -44,7 +45,8 @@ block* generateBlock(char *data)
 	block* newBlock = (block*) malloc(sizeof(block));
 	newBlock->index = index;
 	newBlock->timestamp = timestamp;
-	newBlock->data = data;
+	newBlock->data = malloc(strlen(data) + 1);
+	strncpy(newBlock->data, data, strlen(data) + 1); // TODO: possible buffer overflow
 	newBlock->hash = digest;
 	newBlock->prevHash = latestBlock->hash;
 
