@@ -10,8 +10,19 @@ typedef struct {
 	char *data; // data of block
 	unsigned char *hash; // SHA256 hash of block
 	unsigned char *prevHash; // SHA256 hash of previous block	
+	block *next;
 } block;
 
-block* generateBlock(char *data);
+unsigned char *calculateHash(block *b);
 
+block *getGenesisBlock();
 
+block *generateBlock(char *data);
+
+int isValidNewBlock(block* newBlock);
+
+void insert(block *genisis, block *b);
+
+int len(block *chain, int n);
+
+int equals(block *a, block *b);
